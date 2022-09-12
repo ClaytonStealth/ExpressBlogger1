@@ -51,28 +51,33 @@ router.get('/', function (req, res, next) {
         message: "hello from the blogs default route"
     });
 });
+
 router.get('/all', function (req, res, next) {
+    //response in json format of the entire sampleblogs array of objects
     res.json(sampleBlogs)
 });
-
+// getting a single blog title
 router.get('/single/:blogTitleToGet', function (req, res, next) {
-    //technically dont need this
+    //technically dont need this could just use req.params.blogTitleToGet
     const blogTitleToGet = req.params.blogTitleToGet
+    // variable equalling to finding the index of the blogs array looking for a specific blog from the req param
     const foundBlogIndex = sampleBlogs.findIndex((blogs) => {
         console.log("blogs", blogs)
+        //if any of the blog objects . title equals the req.param url input
         if (blogs.title === blogTitleToGet) {
             console.log("blog found")
             return true
-        } else {
+        } else {//else it doesnt...
             console.log("blog not found")
             return false
         }
-    })
+    })//foundBlog equals a specific index in the sample blogs array that matched the req.param input url
     const foundBlog = sampleBlogs[foundBlogIndex]
     res.json(foundBlog);
 });
 
 router.delete('/single/:blogTitleToDelete', function (req, res, next) {
+    //not required to make this a variable could just use the req.params portion
     const blogTitleToDelete = req.params.blogTitleToDelete
     const indexOfBlog = sampleBlogs.findIndex((blogs) => {
         // return blogs.title === req.params.blogTitleToUpdate
@@ -87,7 +92,7 @@ router.delete('/single/:blogTitleToDelete', function (req, res, next) {
     })
     console.log(indexOfBlog)
 
-
+    //if index from sampleBlog array is less than 0 than it doesnt exist in the array -1 means missing
     if (indexOfBlog < 0) {
         //if the blog was not found in the array, respond with hasBeenDeleted: false and return so that no code underneath executes
         res.json({
