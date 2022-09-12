@@ -51,6 +51,57 @@ router.get('/', function (req, res, next) {
         message: "hello from the blogs default route"
     });
 });
+router.get('/all', function (req, res, next) {
+    res.json(sampleBlogs)
+});
+
+router.get('/single/:blogTitleToGet', function (req, res, next) {
+    //technically dont need this
+    const blogTitleToGet = req.params.blogTitleToGet
+    const foundBlogIndex = sampleBlogs.findIndex((blogs) => {
+        console.log("blogs", blogs)
+        if (blogs.title === blogTitleToGet) {
+            console.log("blog found")
+            return true
+        } else {
+            console.log("blog not found")
+            return false
+        }
+    })
+    const foundBlog = sampleBlogs[foundBlogIndex]
+    res.json(foundBlog);
+});
+
+router.delete('/single/:blogTitleToDelete', function (req, res, next) {
+    const blogTitleToDelete = req.params.blogTitleToDelete
+    const indexOfBlog = sampleBlogs.findIndex((blogs) => {
+        // return blogs.title === req.params.blogTitleToUpdate
+        console.log(blogs.title + "===" + blogTitleToDelete)
+        if (blogs.title === blogTitleToDelete) {
+            console.log("blog titles match")
+            return true
+        } else {
+            console.log("blog titles do not match")
+            return false
+        }
+    })
+    console.log(indexOfBlog)
+
+
+    if (indexOfBlog < 0) {
+        //if the blog was not found in the array, respond with hasBeenDeleted: false and return so that no code underneath executes
+        res.json({
+            hasBeenDeleted: false
+        })
+        return;
+    }
+    //remove the blog.title from the array at the index
+    sampleBlogs.splice(indexOfBlog, 1)
+    res.json({
+        hasBeenDeleted: true
+    });
+});
+
 
 // Module.exports is listing the variables in this file to send to other files
 module.exports = router;
