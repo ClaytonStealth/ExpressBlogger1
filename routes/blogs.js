@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+//validatBlogData being imported from  what was exported from the validation/blogs.js
 var {
     validateBlogData
 } = require("../validation/blogs")
@@ -148,12 +148,12 @@ router.delete('/single/:blogTitleToDelete', function (req, res, next) {
 const blogList = [];
 
 router.post('/create-one', (req, res) => {
-
+//variables equalling the request body payload input
     const title = req.body.title
     const text = req.body.text
     const author = req.body.author
     const category = req.body.category
-
+//new object blogData equalling bringing in the previous variables
     const blogData = {
         title,
         text,
@@ -162,7 +162,7 @@ router.post('/create-one', (req, res) => {
         createdAt: new Date(),
         lastModified: new Date()
     }
-
+//checking the validation function with the data from the blogData object that took in body payload info from postman
     const blogDataCheck = validateBlogData(blogData)
     if (blogDataCheck.isValid === false) {
         res.json({
@@ -171,6 +171,7 @@ router.post('/create-one', (req, res) => {
         })
         return;
     }
+    //pushing the blogData object into blogList empty array
     blogList.push(blogData)
 
     console.log("blogList ", blogList)
