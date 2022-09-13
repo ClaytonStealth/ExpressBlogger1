@@ -54,6 +54,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/all', function (req, res, next) {
     //response in json format of the entire sampleblogs array of objects
+
     res.json({
         success: true,
         blogs: sampleBlogs
@@ -65,9 +66,10 @@ router.get('/single/:blogTitleToGet', function (req, res, next) {
     //technically dont need this could just use req.params.blogTitleToGet
     const blogTitleToGet = req.params.blogTitleToGet
     // variable equalling to finding the index of the blogs array looking for a specific blog from the req param
+
     // const foundBlogIndex = sampleBlogs.findIndex((blogs) => {
     //     console.log("blogs", blogs)
-    //     //if any of the blog objects . title equals the req.param url input
+    //if any of the blog objects . title equals the req.param url input
     //     if (blogs.title === blogTitleToGet) {
     //         console.log("blog found")
     //         return true
@@ -77,6 +79,7 @@ router.get('/single/:blogTitleToGet', function (req, res, next) {
     //     }
     // }) //foundBlog equals a specific index in the sample blogs array that matched the req.param input url
     // const foundBlog = sampleBlogs[foundBlogIndex]
+
     // .find() will return the entry matching the true condition in the callback function
     const foundBlog = sampleBlogs.find((blogs) => {
         if (blogs.title === blogTitleToGet) {
@@ -91,6 +94,21 @@ router.get('/single/:blogTitleToGet', function (req, res, next) {
         success: true,
         blogs: foundBlog
     });
+
+    // const foundBlogIndex = sampleBlogs.findIndex((blogs) => {
+    //     console.log("blogs", blogs)
+    //if any of the blog objects . title equals the req.param url input
+    //     if (blogs.title === blogTitleToGet) {
+    //         console.log("blog found")
+    //         return true
+    //     } else {//else it doesnt...
+    //         console.log("blog not found")
+    //         return false
+    //     }
+    // })//foundBlog equals a specific index in the sample blogs array that matched the req.param input url
+    // const foundBlog = sampleBlogs[foundBlogIndex]
+    // res.json(foundBlog);
+
 });
 
 router.delete('/single/:blogTitleToDelete', function (req, res, next) {
