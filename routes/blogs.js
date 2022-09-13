@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
+var {
+    validateBlogData
+} = require("../validation/blogs")
+
 const sampleBlogs = [{
         title: "dicta",
         text: "Iusto et in et. Nulla accusantium fugit. Et qui dolorem inventore soluta et veritatis. Aut ut aut non laudantium eveniet suscipit odit. Sapiente sint nihil nihil sit et molestias. In nisi omnis quas et sed aut minus aperiam ea.\n \rLaudantium quo quisquam quae. Et et quas officia perspiciatis iusto sunt sunt eaque. Quidem sit voluptas deserunt sequi magni.\n \rEst est facere cumque ipsam omnis animi. Voluptatem magnam officiis architecto possimus. Quia similique aut eos qui. Quasi quae sed aliquam.",
@@ -141,6 +145,40 @@ router.delete('/single/:blogTitleToDelete', function (req, res, next) {
     });
 });
 
+const blogList = [];
+
+router.post('/create-one', (req, res) => {
+
+    const title = req.body.title
+    const text = req.body.text
+    const author = req.body.author
+    const category = req.body.category
+
+    const blogData = {
+        title,
+        text,
+        author,
+        category,
+        createdAt: new Date(),
+        lastModified: new Date()
+    }
+
+    const blogDataCheck = validateBlogData(blogData)
+    if (blogDataCheck.isValid === false) {
+        res.json({
+            success: false,
+            message: blogDataCheck.message
+        })
+        return;
+    }
+    blogList.push(blogData)
+
+    console.log("blogList ", blogList)
+
+    res.json({
+        success: true
+    })
+})
 
 // Module.exports is listing the variables in this file to send to other files
 module.exports = router;
