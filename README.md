@@ -41,3 +41,20 @@
         var usersRouter = require('./routes/users');
             app.use('./users', usersRouter);
             the '/all' path for the route we created in users.js is going to be APPENDED
+
+
+
+
+
+            ## Class notes - day 2:
+
+            - Server-side Validation is checking the request inputs before the CRUD operation is executed.
+
+            - _NOTE_: Server-side validation is required to be implemented for all full stack websites/applications
+            
+            - package.json
+                - dependencies are the libraries/node_modules that are reequired for our application to run
+                - devDependencies are the librareies/node_moduiles that are only needed when doing development work
+                - _NOTE_: If you are running 'npm i' in a project for the first time after cloining the repo
+            - Nodemon
+                - Nodemon is a developer library that will restart the server automatically when any of the files inside the repo are changed.
