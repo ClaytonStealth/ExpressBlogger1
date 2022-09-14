@@ -204,25 +204,12 @@ router.put('/update-one/:blogTitle', (req, res) => {
     console.log("ogBlog", ogBlog)
 
 
-
-
-    // const updatedBlog = {
-    //     title: blogData.title,
-    //     text: blogData.text,
-    //     author: blogData.author,
-    //     category: blogData.category,
-    //     createdAt: ogBlog.createdAt,
-    //     lastModified: new Date()
-    // }
-
-    // console.log("blog before", updatedBlog)
-
     const blogData = {
         title,
         text,
         author,
         category,
-        createdAt: new Date(),
+        createdAt: ogBlog.createdAt,
         lastModified: new Date()
     }
 

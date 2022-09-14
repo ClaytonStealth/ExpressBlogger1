@@ -32,10 +32,33 @@ const validateBlogData = (blogData) => {
     }
 
     if (blogData.category !== undefined && blogData.category.length > 0) {
+        if (blogData.category.length > 10) {
+            return {
+                isValid: false,
+                message: "There are too many items in the category"
+            }
+        }
+
+        const nonStringCategory = blogData.category.filter((category) => {
+
+            // If the callback function in .filter() returns true, then the item will be kept in the resultant array. If the callback returns false, the item will be filtered out
+            if (typeof (category) !== 'string') {
+                return true
+            } else {
+                return false
+            }
+        })
+
+        console.log("nonStringCategory ", nonStringCategory)
+
+        if (nonStringCategory.length > 0) {
+            return {
+                isValid: false,
+                message: "categories must be strings ONLY"
+            }
+        }
 
     }
-
-
     return {
         isValid: true
     }
