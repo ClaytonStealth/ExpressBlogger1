@@ -188,6 +188,7 @@ router.put('/update-one/:blogTitle', (req, res) => {
     const author = req.body.author
     const category = req.body.category
 
+    //using .findIndex to locate and match blogs.title to blogTitle in the url
     const ogBlogIndex = sampleBlogs.findIndex((blogs) => {
         if (blogs.title === blogTitle) {
             console.log("blog titles match")
@@ -203,7 +204,7 @@ router.put('/update-one/:blogTitle', (req, res) => {
 
     console.log("ogBlog", ogBlog)
 
-
+//blogData object is being created with the variables from the body payload 
     const blogData = {
         title,
         text,
@@ -212,28 +213,27 @@ router.put('/update-one/:blogTitle', (req, res) => {
         createdAt: ogBlog.createdAt,
         lastModified: new Date()
     }
-
+//if the body payload  keyvalue pairs are empty strings then it will just maintain the original blog information
     if (req.body.title == "") {
         blogData.title = ogBlog.title
     }
-
-
     if (req.body.text === "") {
         blogData.text = ogBlog.text
     }
-
     if (req.body.author === "") {
         blogData.author = ogBlog.author
     }
 
+    //blogDataCheck validating blogData through the validateBlogData function that we imported from /validation.blogs.js
     const blogDataCheck = validateBlogData(blogData)
+    //if it checks and comes out that isValid is false then it will respond with false success and the msg as to what is causing it to fail
     if (blogDataCheck.isValid === false) {
         res.json({
             success: false,
             message: blogDataCheck.message
         })
         return;
-    }
+    }//sampleBlogs Array at the original index is being replaced with the Blog Data that was entered from the body payload
     sampleBlogs[ogBlogIndex] = blogData;
     console.log("sampleBlogs", sampleBlogs)
 
