@@ -148,12 +148,12 @@ router.delete('/single/:blogTitleToDelete', function (req, res, next) {
 const blogList = [];
 
 router.post('/create-one', (req, res) => {
-//variables equalling the request body payload input
+    //variables equalling the request body payload input
     const title = req.body.title
     const text = req.body.text
     const author = req.body.author
     const category = req.body.category
-//new object blogData equalling bringing in the previous variables
+    //new object blogData equalling/bringing in the previous variables
     const blogData = {
         title,
         text,
@@ -162,7 +162,7 @@ router.post('/create-one', (req, res) => {
         createdAt: new Date(),
         lastModified: new Date()
     }
-//checking the validation function with the data from the blogData object that took in body payload info from postman
+    //checking the validation function with the data from the blogData object that took in body payload info from postman
     const blogDataCheck = validateBlogData(blogData)
     if (blogDataCheck.isValid === false) {
         res.json({
@@ -179,6 +179,81 @@ router.post('/create-one', (req, res) => {
     res.json({
         success: true
     })
+})
+
+router.put('/update-one/:blogTitle', (req, res) => {
+    const blogTitle = req.params.blogTitle
+    const title = req.body.title
+    const text = req.body.text
+    const author = req.body.author
+    const category = req.body.category
+
+    const ogBlogIndex = sampleBlogs.findIndex((blogs) => {
+        if (blogs.title === blogTitle) {
+            console.log("blog titles match")
+            return true
+        } else {
+            console.log("blog titles dont match")
+            return false
+        }
+    })
+    console.log("ogBlogIndex", ogBlogIndex)
+
+    const ogBlog = sampleBlogs[ogBlogIndex]
+
+    console.log("ogBlog", ogBlog)
+
+
+
+
+    // const updatedBlog = {
+    //     title: blogData.title,
+    //     text: blogData.text,
+    //     author: blogData.author,
+    //     category: blogData.category,
+    //     createdAt: ogBlog.createdAt,
+    //     lastModified: new Date()
+    // }
+
+    // console.log("blog before", updatedBlog)
+
+    const blogData = {
+        title,
+        text,
+        author,
+        category,
+        createdAt: new Date(),
+        lastModified: new Date()
+    }
+
+    if (req.body.title == "") {
+        blogData.title = ogBlog.title
+    }
+
+
+    if (req.body.text === "") {
+        blogData.text = ogBlog.text
+    }
+
+    if (req.body.author === "") {
+        blogData.author = ogBlog.author
+    }
+
+    const blogDataCheck = validateBlogData(blogData)
+    if (blogDataCheck.isValid === false) {
+        res.json({
+            success: false,
+            message: blogDataCheck.message
+        })
+        return;
+    }
+    sampleBlogs[ogBlogIndex] = blogData;
+    console.log("sampleBlogs", sampleBlogs)
+
+    res.json({
+        success: true
+    })
+
 })
 
 // Module.exports is listing the variables in this file to send to other files
