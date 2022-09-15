@@ -31,37 +31,69 @@ const validateBlogData = (blogData) => {
         }
     }
 
-    if (blogData.category !== undefined && blogData.category.length > 0) {
-        //validating that none of the categories from the blogs being input have more than 10 items inside
-        if (blogData.category.length > 10) {
-            return {
-                isValid: false,
-                message: "There are too many items in the category"
-            }
+    if (
+        blogData.category === undefined ||
+        Array.isArray(blogData.category) === false ||
+        blogData.category.length < 1
+    ) {
+        return {
+            isValid: false,
+            message: "Category must exist, must be an array, and must have items within it"
         }
-//nonStringCategory equaling blog categories that are being .filtered by .filter() function
-        const nonStringCategory = blogData.category.filter((category) => {
-
-            // If the callback function in .filter() returns true, then the item will be kept in the resultant array. If the callback returns false, the item will be filtered out
-            if (typeof (category) !== 'string') {
-                //checking if typeof category array items dont equal a sring then they get put into the variable nonStringCategory
-                return true
-            } else {
-                //if false they are a string and aceeptible
-                return false
-            }
-        })
-
-        console.log("nonStringCategory ", nonStringCategory)
-//if the nonStringCategory.length is more than 0 than the blogData.categories are invalid becuase they are not all strings
-        if (nonStringCategory.length > 0) {
-            return {
-                isValid: false,
-                message: "categories must be strings ONLY"
-            }
-        }
-
     }
+
+    if (blogData.category.length > 10) {
+        return {
+            isValid: false,
+            message: "Category cannot have more than 10 items"
+        }
+    }
+    //nonStringCategory equaling blog categories that are being .filtered by .filter() function
+    const nonStringCategory = blogData.category.filter((category) => {
+
+        // If the callback function in .filter() returns true, then the item will be kept in the resultant array. If the callback returns false, the item will be filtered out
+        if (typeof (category) !== 'string') {
+            //checking if typeof category array items dont equal a sring then they get put into the variable nonStringCategory
+            return true
+        } else {
+            //if false they are a string and aceeptible
+            return false
+        }
+    })
+
+
+    //if the nonStringCategory.length is more than 0 than the blogData.categories are invalid becuase they are not all strings
+    if (nonStringCategory.length > 0) {
+        return {
+            isValid: false,
+            message: "categories must be strings ONLY"
+        }
+    }
+
+    const validCategories = [
+        "Lorem",
+        "ipsum",
+        "dolor",
+        "sit",
+        "amet"
+    ]
+
+    let isArrayValid = true
+
+    blogData.category.forEach((blogCategory) => {
+        if (validCategories.includes(blogCategory) === false) {
+            isArrayValid = false;
+        }
+    })
+
+    if (isArrayValid === false) {
+        return {
+            isValid: false,
+            message: "items in category must be one of the following: Lorem,ipsum,dolor,sit,amet"
+
+        }
+    }
+
     return {
         isValid: true
     }

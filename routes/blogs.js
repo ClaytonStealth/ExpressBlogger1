@@ -58,6 +58,25 @@ router.get('/', function (req, res, next) {
 
 router.get('/all', function (req, res, next) {
     //response in json format of the entire sampleblogs array of objects
+    const fields = req.query.fields
+
+    const fieldsArray = fields.split(",")
+
+    console.log(fields)
+    console.log(fieldsArray)
+    //.map() loops through the array and modifies each entry and returns the modified entry into a new array for all items
+    const mappedBlogs = sampleBlogs.map((blog) => {
+        const blogWithFields = {}
+        //loop through fieldsArray and assign that field from blog to blogWithFields
+        fieldsArray.forEach((field) => {
+            //blogWithFields["title"] = blog["title"]
+            blogWithFields[field] = blog[field]
+
+        })
+        return blogWithFields
+    })
+
+    console.log(mappedBlogs)
 
     res.json({
         success: true,
@@ -204,7 +223,7 @@ router.put('/update-one/:blogTitle', (req, res) => {
 
     console.log("ogBlog", ogBlog)
 
-//blogData object is being created with the variables from the body payload 
+    //blogData object is being created with the variables from the body payload 
     const blogData = {
         title,
         text,
@@ -213,7 +232,7 @@ router.put('/update-one/:blogTitle', (req, res) => {
         createdAt: ogBlog.createdAt,
         lastModified: new Date()
     }
-//if the body payload  keyvalue pairs are empty strings then it will just maintain the original blog information
+    //if the body payload  keyvalue pairs are empty strings then it will just maintain the original blog information
     if (req.body.title == "") {
         blogData.title = ogBlog.title
     }
@@ -233,7 +252,7 @@ router.put('/update-one/:blogTitle', (req, res) => {
             message: blogDataCheck.message
         })
         return;
-    }//sampleBlogs Array at the original index is being replaced with the Blog Data that was entered from the body payload
+    } //sampleBlogs Array at the original index is being replaced with the Blog Data that was entered from the body payload
     sampleBlogs[ogBlogIndex] = blogData;
     console.log("sampleBlogs", sampleBlogs)
 
